@@ -9,9 +9,6 @@ import 'package:frontend/src/view/registerView.dart';
 import 'package:frontend/src/view/walletView.dart';
 import 'package:frontend/src/widget/feedListItem.dart';
 
-import 'mycardView.dart';
-import 'walletView.dart';
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -24,10 +21,10 @@ class MyApp extends StatelessWidget {
       routes: {
         '/myPage': (context) => MyPage(),
         '/home': (context) => Main(),
-        '/cardRegister':(context) => CardRegister(),
-        '/register':(context) => Register(),
-        '/login':(context) => Login(),
-        '/cards':(context) => Cards(),
+        '/cardRegister': (context) => CardRegister(),
+        '/register': (context) => Register(),
+        '/login': (context) => Login(),
+        '/cards': (context) => Cards(),
         '/wallets': (context) => Wallets(),
         '/search': (context) => FeedIndex(),
       },
