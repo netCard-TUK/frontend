@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/view/cardRegisterView.dart';
 import 'package:frontend/src/view/loginView.dart';
 import 'package:frontend/src/view/mainView.dart';
+import 'package:frontend/src/view/mycardView.dart';
 import 'package:frontend/src/view/mypageView.dart';
 import 'package:frontend/src/view/registerView.dart';
+import 'package:frontend/src/view/walletView.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp ({super.key});
@@ -19,8 +21,8 @@ class MyApp extends StatelessWidget {
         '/cardRegister':(context) => CardRegister(),
         '/register':(context) => Register(),
         '/login':(context) => Login(),
-        //'/cards':(context) => Cards(),
-        //'/wallets': (context) => Wallets(),
+        '/cards':(context) => Cards(),
+        '/wallets': (context) => Wallets(),
       },
       initialRoute: '/',
       home: Login(),

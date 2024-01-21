@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/widget/bottomNavigation.dart';
 
-class MyPage extends StatelessWidget {
+class MyPage extends StatefulWidget{
   const MyPage({super.key});
+
+  @override
+  State<MyPage> createState() => _MyPage();
+}
+
+class _MyPage extends State<MyPage> {
 
   void _walletsSubmitForm() async {
     //내 명함 지갑 버튼을 누를때 로직
+    Navigator.pushNamed(context, '/wallets');
   }
 
   void _cardsSubmitForm() async {
     //내 명함 확인 버튼을 누를때 로직
+    Navigator.pushNamed(context, '/cards');
   }
 
   @override
@@ -21,12 +29,9 @@ class MyPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            
             //내 명함 지갑
             ElevatedButton(
-              onPressed: () {
-                // 버튼1 클릭 시 수행할 작업
-              },
+              onPressed: _walletsSubmitForm,
               child: Text('내 명함 지갑'),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(300, 70),
@@ -41,9 +46,7 @@ class MyPage extends StatelessWidget {
 
             //내 명함 확인
             ElevatedButton(
-              onPressed: () {
-                // 버튼2 클릭 시 수행할 작업
-              },
+              onPressed: _cardsSubmitForm,
               child: Text('내 명함 확인'),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(300, 70), // 원하는 크기 설정
@@ -71,6 +74,8 @@ class MyPage extends StatelessWidget {
                 fixedSize: Size(300, 70), // 원하는 크기 설정
               ),
             ),
+            const SizedBox(height: 16),
+            // 버전 정보
           ],
         ),
       ),
