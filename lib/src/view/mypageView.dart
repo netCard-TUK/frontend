@@ -36,8 +36,9 @@ class _MyPage extends State<MyPage> {
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(300, 70),
                 backgroundColor: Color(0xffC4DCED),
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   color: Colors.black,
+                  fontSize: 20,
                 ), // 원하는 크기 설정
               ),
             ),
@@ -49,7 +50,12 @@ class _MyPage extends State<MyPage> {
               onPressed: _cardsSubmitForm,
               child: Text('내 명함 확인'),
               style: ElevatedButton.styleFrom(
-                fixedSize: Size(300, 70), // 원하는 크기 설정
+                fixedSize: Size(300, 70),
+                backgroundColor: Color(0xffC4DCED),
+                textStyle: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ), // 원하는 크기 설정
               ),
             ),
             const SizedBox(height: 16),
@@ -60,7 +66,12 @@ class _MyPage extends State<MyPage> {
               },
               child: Text('회원 탈퇴'),
               style: ElevatedButton.styleFrom(
-                fixedSize: Size(300, 70), // 원하는 크기 설정
+                fixedSize: Size(300, 70),
+                backgroundColor: Color(0xffC4DCED),
+                textStyle: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ), // 원하는 크기 설정
               ),
             ),
             const SizedBox(height: 16),
@@ -71,7 +82,12 @@ class _MyPage extends State<MyPage> {
               },
               child: Text('로그 아웃'),
               style: ElevatedButton.styleFrom(
-                fixedSize: Size(300, 70), // 원하는 크기 설정
+                fixedSize: Size(300, 70),
+                backgroundColor: Color(0xffC4DCED),
+                textStyle: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ), // 원하는 크기 설정
               ),
             ),
             const SizedBox(height: 16),

@@ -9,16 +9,20 @@ import 'package:frontend/src/view/registerView.dart';
 import 'package:frontend/src/view/walletView.dart';
 import 'package:frontend/src/widget/feedListItem.dart';
 
+import 'mycardView.dart';
+import 'walletView.dart';
+
 class MyApp extends StatelessWidget {
-  const MyApp ({super.key});
+  const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context){
-    return  MaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: Colors.grey[200],
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.grey[200],
       ),
       routes: {
-        '/myPage':(context) => MyPage(),
+        '/myPage': (context) => MyPage(),
         '/home': (context) => Main(),
         '/cardRegister':(context) => CardRegister(),
         '/register':(context) => Register(),
