@@ -2,8 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/widget/bottomNavigation.dart';
 
 //클래스명: Main
-class Main extends StatelessWidget {
+class Main extends StatefulWidget {
   const Main({super.key});
+
+  @override
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
+  void _searchSubmitForm() async {
+    //검색 버튼을 누를때 로직
+    Navigator.pushNamed(context, '/search');
+  }
 
   @override
   Widget build(BuildContext context){
@@ -46,7 +56,7 @@ class Main extends StatelessWidget {
               width: 8,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: _searchSubmitForm,
               child: Text('검색'),
             ),
           ],
