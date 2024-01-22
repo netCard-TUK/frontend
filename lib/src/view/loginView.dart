@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/controller/userController.dart';
 import 'package:frontend/src/view/mainView.dart';
 import 'package:frontend/src/view/registerView.dart';
 import 'package:get/get.dart';
@@ -14,21 +15,29 @@ class _LoginState extends State<Login> {
   //아이디&비밀번호
   final TextEditingController _userEmailController = TextEditingController();
   final TextEditingController _userPwController = TextEditingController();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  
+  final userController = Get.put(UserController());
+  
   //로그인 완료 버튼을 누를 때, 동작할 함수
   void _submitForm() async {
     //현재 폼에서 별다른 오류가 없을 때
     if (_formKey.currentState!.validate()) {
       final String email = _userEmailController.text; //이메일
       final String password = _userPwController.text; //비밀번호
+    
+      //TODO: 로그인 로직추가
+      bool result = await userController.login(email, password);
+
+      if(result){
+        Get.offAll(()=> const Login());
+      }
     }
 
-    //TODO: 로그인 로직추가
+  
 
     //회원가입 성공 시, 다음화면으로 이동 혹은 처리
-    Navigator.pushNamed(context, '/home');
+    // Navigator.pushNamed(context, '/home');
   }
 
   void _registerSubmitForm() async {

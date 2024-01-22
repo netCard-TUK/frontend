@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/connect/userconnect.dart';
+import 'package:frontend/src/controller/userController.dart';
+import 'package:frontend/src/view/loginView.dart';
 import 'package:frontend/src/view/mainView.dart';
 import 'package:get/get.dart';
 
@@ -10,17 +13,18 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  //final userController = Get.put(registerController());
+  final userController = Get.put(UserController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  final RegExp emailRegex =
-      RegExp(r'^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$');
-  final RegExp phoneRegex =
-      RegExp(r'^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$');
+  // final RegExp emailRegex =
+  //     RegExp(r'^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$');
+  // final RegExp phoneRegex =
+  //     RegExp(r'^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$');
+
   //회원가입 완료 버튼을 누를 때, 동작할 함수
   void _submitForm() async {
     //현재 폼에서 별다른 오류가 없을 때
@@ -32,10 +36,14 @@ class _RegisterState extends State<Register> {
 
       // 회원가입 로직 추가
       // 안드로이드앱은 localhost가 아니라 직접 ip 입력해야함
-      //bool result = await userController.register(email, name, password);
+      bool result = await userController.register(email, name, password, phone);
 
       // 회원가입 성공 시, 다음 화면으로 이동 혹은 처리
-      Navigator.pushNamed(context, '/login');
+      // Navigator.pushNamed(context, '/login');
+      if(result){
+        Get.offAll(()=> const Login());
+      }
+
     }
   }
 
@@ -54,7 +62,7 @@ class _RegisterState extends State<Register> {
         key: _formKey,
         child: ListView(
           children: [
-            //이메일 입력부분
+            //메일 입력부분
             const SizedBox(height: 20),
             TextFormField(
               controller: _emailController,
@@ -69,9 +77,9 @@ class _RegisterState extends State<Register> {
                 if (value == null || value.isEmpty) {
                   return '이메일을 입력하세요.';
                 }
-                if (!emailRegex.hasMatch(value)) {
-                  return '이메일 형식에 맞지 않습니다.';
-                }
+                // if (!emailRegex.hasMatch(value)) {
+                //   return '이메일 형식에 맞지 않습니다.';
+                // }
                 return null;
               },
             ),
@@ -92,9 +100,9 @@ class _RegisterState extends State<Register> {
                 if (value == null || value.isEmpty) {
                   return '비밀번호를 입력하세요.';
                 }
-                if (value.length < 5) {
-                  return '비밀번호가 너무 짧습니다.';
-                }
+                // if (value.length < 5) {
+                //   return '비밀번호가 너무 짧습니다.';
+                // }
                 return null;
               },
             ),
@@ -135,9 +143,9 @@ class _RegisterState extends State<Register> {
                 if (value == null || value.isEmpty) {
                   return '전화번호를 입력하세요.';
                 }
-                if (!phoneRegex.hasMatch(value)) {
-                  return '전화번호 형식이 아닙니다.';
-                }
+                // if (!phoneRegex.hasMatch(value)) {
+                //   return '전화번호 형식이 아닙니다.';
+                // }
                 return null;
               },
             ),
