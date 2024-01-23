@@ -8,13 +8,14 @@ import 'package:frontend/src/view/mypageView.dart';
 import 'package:frontend/src/view/registerView.dart';
 import 'package:frontend/src/view/walletView.dart';
 import 'package:frontend/src/widget/feedListItem.dart';
+import 'package:get/get.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp ({super.key});
 
   @override
   Widget build(BuildContext context){
-    return  MaterialApp(
+    return  GetMaterialApp(
       theme: ThemeData(scaffoldBackgroundColor: Colors.grey[200],
       ),
       routes: {
@@ -23,12 +24,12 @@ class MyApp extends StatelessWidget {
         '/cardRegister':(context) => CardRegister(),
         '/register':(context) => Register(),
         '/login':(context) => Login(),
-        '/cards':(context) => Cards(),
+        '/cards':(context) => MyCardsView(),
         '/wallets': (context) => Wallets(),
-        '/search': (context) => FeedIndex(),
+        // '/search': (context) => FeedIndex(),
       },
       initialRoute: '/',
-      home: Login(),
+      home: CardRegister(),
     );
   }
 }

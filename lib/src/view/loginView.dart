@@ -19,6 +19,28 @@ class _LoginState extends State<Login> {
   
   final userController = Get.put(UserController());
   
+  void _withdrawAlertForm(BuildContext context) async {
+    //알림창
+    return showDialog<void>(
+        // 다이얼로그 위젯 소환
+        context: context,
+        barrierDismissible: false, // 다이얼로그 이외의 바탕을 눌러도 안꺼지도록 설정
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('알림'),
+            content: Text('로그인 실패'),
+            actions: [
+              TextButton(
+                child: Text('확인'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   //로그인 완료 버튼을 누를 때, 동작할 함수
   void _submitForm() async {
     //현재 폼에서 별다른 오류가 없을 때
@@ -29,8 +51,11 @@ class _LoginState extends State<Login> {
       //TODO: 로그인 로직추가
       bool result = await userController.login(email, password);
 
-      if(result){
-        Get.offAll(()=> const Login());
+      if(result == true){
+        // Get.offAll(()=> const Main());
+        Navigator.pushNamed(context, '/home');
+      }else{
+        _withdrawAlertForm(context);
       }
     }
 
@@ -81,7 +106,6 @@ class _LoginState extends State<Login> {
                 if (value == null || value.isEmpty) {
                   return '이메일을 입력하세요.';
                 }
-                //TODO: 올바르지 않은 이메일 일때 로직 구현
                 return null;
               },
             ),
@@ -104,9 +128,6 @@ class _LoginState extends State<Login> {
                 // TODO: 비밀번호가 올바르지 않을때의 로직 구현
                 if (value == null || value.isEmpty) {
                   return '비밀번호를 입력하세요.';
-                }
-                if (value.length < 5) {
-                  return '비밀번호가 너무 짧습니다.';
                 }
                 return null;
               },

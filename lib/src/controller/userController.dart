@@ -3,6 +3,7 @@ import 'package:frontend/connect/userConnect.dart';
 import 'package:frontend/src/model/userModel.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final GetStorage _storage = GetStorage();
 
@@ -11,6 +12,7 @@ final GetStorage _storage = GetStorage();
 class UserController extends GetxController{
   // UserConnect 객체를 생성 (의존성 주입)
   final userConnection = Get.put(UserConnect());
+  late SharedPreferences prefs;
 
   //공통으로 관리할 멤버변수
   UserModel? user;
@@ -25,10 +27,14 @@ class UserController extends GetxController{
     try{
       String token = await userConnection.sendRegister(email, name, password, phone);
       await _storage.write('access_token',token);
+      
       return true;
     }catch(e){
-      ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(content: Text("$e"),
-      ));
+      // if(Get.context != null){
+      //   ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(content: Text("$e"),
+      // ));
+      // }
+      print(e);
       return false;
     }
 
@@ -41,16 +47,12 @@ class UserController extends GetxController{
       await _storage.write('access_token', token);
       return true;
     }catch(e){
-      ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(content: Text("$e"),
-      ));
+      if(Get.context != null){
+        ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(content: Text("$e"),
+        ));
+      }
+      
       return false;
     }
-  }
-  
-  //나의 정보를 가져오는 함수, connect 호출할 것임
-  Future mypage() async{
-    Map map = await userConnection.getMyInfo();
-    UserModel parseUser = UserModel.fromJson(map);
-    user = parseUser;
   }
 }

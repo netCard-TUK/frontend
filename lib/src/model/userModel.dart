@@ -4,14 +4,12 @@ class UserModel{
   String? password;
   String? name;
   String? phone;
-  bool? isActive;
 
   UserModel.fromJson(Map m){
     userId = m['userId'];
-    password = m['passwors'];
+    password = m['password'];
     email = m['email'];
     name = m['name'];
     phone = m['phone'];
-    isActive = m['isActive'];
   }
 }
