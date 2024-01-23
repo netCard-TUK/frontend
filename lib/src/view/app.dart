@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         '/search': (context) => FeedIndex(),
       },
       initialRoute: '/',
-      home: Login(),
+      home: Cards(),
     );
   }
 }

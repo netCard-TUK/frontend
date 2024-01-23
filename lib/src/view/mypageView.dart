@@ -56,7 +56,7 @@ class _MyPage extends State<MyPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('알림'),
-            content: Text('정말로 탈퇴하시겠습니까?'),
+            content: Text('정말로 로그아웃하시겠습니까?'),
             actions: [
               TextButton(
                 child: Text('취소'),

@@ -1,4 +1,4 @@
-class UserModel{
+class UserModel {
   int? userId;
   String? email;
   String? password;
@@ -6,9 +6,9 @@ class UserModel{
   String? phone;
   bool? isActive;
 
-  UserModel.fromJson(Map m){
+  UserModel.fromJson(Map m) {
     userId = m['userId'];
-    password = m['passwors'];
+    password = m['password'];
     email = m['email'];
     name = m['name'];
     phone = m['phone'];
