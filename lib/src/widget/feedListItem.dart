@@ -16,7 +16,7 @@ class FeedListItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           //수정필수
           child: Image.network(
-            "${Global.apiRoot}/cards/search/${model.userId}",
+            "${Global.apiRoot}/cards/search/${model.cardId}",
             width: 100, 
             height: 100,
             errorBuilder: (context, error, stackTrace) {

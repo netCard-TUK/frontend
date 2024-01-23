@@ -20,10 +20,27 @@ class _RegisterState extends State<Register> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  // final RegExp emailRegex =
-  //     RegExp(r'^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$');
-  // final RegExp phoneRegex =
-  //     RegExp(r'^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$');
+    void _withdrawAlertForm(BuildContext context) async {
+    //알림창
+    return showDialog<void>(
+        // 다이얼로그 위젯 소환
+        context: context,
+        barrierDismissible: false, // 다이얼로그 이외의 바탕을 눌러도 안꺼지도록 설정
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('알림'),
+            content: Text('회원가입 실패'),
+            actions: [
+              TextButton(
+                child: Text('확인'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
 
   //회원가입 완료 버튼을 누를 때, 동작할 함수
   void _submitForm() async {
@@ -39,9 +56,11 @@ class _RegisterState extends State<Register> {
       bool result = await userController.register(email, name, password, phone);
 
       // 회원가입 성공 시, 다음 화면으로 이동 혹은 처리
-      // Navigator.pushNamed(context, '/login');
-      if(result){
-        Get.offAll(()=> const Login());
+      
+      if(result == true){
+        Navigator.pushNamed(context, '/login');
+      }else{
+        _withdrawAlertForm(context);
       }
 
     }
