@@ -63,7 +63,7 @@ class CardConnect extends GetConnect {
 
   // 모든 명함 정보 전체 조회
   getAllCardList({int page = 0}) async {
-    Response response = await get(
+    connect.Response response = await get(
       '/api/cards',
       query: {'page': page.toString(), 'size': "10"},
     );
@@ -77,7 +77,7 @@ class CardConnect extends GetConnect {
 
   // 명함 만든사람 검색 조회
   getCardListByUsername(String name) async {
-    Response response = await get(
+    connect.Response response = await get(
       '/api/cards/search/list/$name',
     );
     if (response.statusCode == null) throw Exception('통신 에러');
