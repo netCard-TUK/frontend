@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/model/cardModel.dart';
 import 'package:get/get.dart';
 
+import '../../shared/global.dart';
+
+
+
 class DetailItem extends StatelessWidget {
+
   final CardModel model;
 
   const DetailItem(this.model, {super.key});
@@ -20,7 +25,7 @@ class DetailItem extends StatelessWidget {
                 // 사진
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.network("${model.photo}",
+                  child: Image.network(model.photo == null ? Global.defaultImage : "${model.photo}",
                       width: 120,
                       height: 190, errorBuilder: (context, error, stackTrace) {
                     return Image.asset('asset/logo.png',

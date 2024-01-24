@@ -37,12 +37,10 @@ class CardConnect extends GetConnect {
       '/api/cards',
       query: {'page': "0", 'size': "10"},
       headers: {
-        'userId': userId,
+        'userId': userId.toString(),
         'access_token': accessToken,
       },
     );
-
-    print(response.body);
 
     if (response.statusCode == null) throw Exception('통신 에러');
 
@@ -56,14 +54,14 @@ class CardConnect extends GetConnect {
 
   //내 지갑에 명함 추가
   addCard(int cardId) async {
-    String accessToken = _storage.read('access_token') ?? '';
-    String userId = _storage.read('userId') ?? '';
+    String accessToken = _storage.read('access_token') ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA2MDg0MTYwfQ.Yep1MjQA0eJVHM57GLfYP1vp8qg6c4IHzVRW3mvbUNk';
+    String userId = _storage.read('userId') ?? '1';
 
     print("userId: $userId");
 
-    Map<String, int> requestBody = {
-      'userId': int.parse(userId),
-      'cardId': cardId,
+    Map<String, String> requestBody = {
+      'userId': userId.toString(),
+      'cardId': cardId.toString(),
     };
 
     connect.Response response = await post(
@@ -109,22 +107,6 @@ class CardConnect extends GetConnect {
     }
     return body['result'];
   }
-
-  //이미지 업로드
-  // imageUpload(String name, String path) async{
-  //   final form = FormData({'file': MultipartFile(path,filename:name)});
-
-  //   Response response = await post ('api/cards/register', form);
-  //   Logger().i(response.statusCode);
-  //   if(response.statusCode == null) throw Exception('통신에러');
-  //   return response.body;
-  // }
-
-  // Future<void> cardRegister() async{
-  //   try{
-  //     XFile? imageFile = await _imagePicker.pickImage
-  //   }
-  // }
 
   cardRegister(
     String position,
@@ -175,5 +157,29 @@ class CardConnect extends GetConnect {
       return request;
     });
     super.onInit();
+  }
+
+  // 추가한 명함들 조회
+  getAddingCardList({int page = 0}) async {
+    String accessToken = _storage.read('access_token') ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA2MDg0MTYwfQ.Yep1MjQA0eJVHM57GLfYP1vp8qg6c4IHzVRW3mvbUNk';
+    String userId = _storage.read('userId') ?? '1';
+    connect.Response response = await get(
+      '/api/wallets/users/$userId',
+      query: {'page': page.toString(), 'size': "1000"},
+      headers: {
+        'access_token': accessToken,
+      },
+    );
+
+    if (response.statusCode != 200) throw Exception('통신 에러');
+
+    Map<String, dynamic> body = response.body;
+    print("body");
+    print(body);
+
+    if (body['isSuccess'] == false) {
+      throw Exception(body['message']);
+    }
+    return body['cards'];
   }
 }
