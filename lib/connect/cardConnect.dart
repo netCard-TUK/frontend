@@ -42,8 +42,6 @@ class CardConnect extends GetConnect {
       },
     );
 
-    print(response.body);
-
     if (response.statusCode == null) throw Exception('통신 에러');
 
     Map<String, dynamic> body = response.body;
@@ -52,6 +50,36 @@ class CardConnect extends GetConnect {
       throw Exception(body['message']);
     }
     return body['result'];
+  }
+
+  //내 지갑에 명함 추가
+  addCard(int cardId) async {
+    String accessToken = _storage.read('access_token') ??
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA2MDg0MTYwfQ.Yep1MjQA0eJVHM57GLfYP1vp8qg6c4IHzVRW3mvbUNk';
+    String userId = _storage.read('userId').toString() ?? '1';
+
+    print("userId: $userId");
+
+    Map<String, String> requestBody = {
+      'userId': userId.toString(),
+      'cardId': cardId.toString(),
+    };
+
+    conn.Response response = await post(
+      '/api/wallets',
+      requestBody,
+      headers: {
+        'access_token': accessToken,
+      },
+    );
+    if (response.statusCode == null) throw Exception('통신 에러');
+    Map<String, dynamic> body = response.body;
+    if (body['isSuccess'] == false) {
+      throw Exception(body['message']);
+    }
+
+    print(body);
+    return;
   }
 
   // 모든 명함 정보 전체 조회
@@ -80,22 +108,6 @@ class CardConnect extends GetConnect {
     }
     return body['result'];
   }
-
-  //이미지 업로드
-  // imageUpload(String name, String path) async{
-  //   final form = FormData({'file': MultipartFile(path,filename:name)});
-
-  //   Response response = await post ('api/cards/register', form);
-  //   Logger().i(response.statusCode);
-  //   if(response.statusCode == null) throw Exception('통신에러');
-  //   return response.body;
-  // }
-
-  // Future<void> cardRegister() async{
-  //   try{
-  //     XFile? imageFile = await _imagePicker.pickImage
-  //   }
-  // }
 
   cardRegister(
     String position,
@@ -170,5 +182,30 @@ class CardConnect extends GetConnect {
       return request;
     });
     super.onInit();
+  }
+
+  // 추가한 명함들 조회
+  getAddingCardList({int page = 0}) async {
+    String accessToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTcwNjEwODk4Nn0.6z2VPgqKMDlkZxvM6pU_Jyaw3q9fXbz1HbJoHzaEaiQ';
+    int userId = _storage.read('userId') ?? 1;
+    print("userId: $userId");
+    conn.Response response = await get(
+      '/api/wallets/users/$userId',
+      query: {'page': page.toString(), 'size': "1000"},
+      headers: {
+        'access_token': accessToken,
+      },
+    );
+
+    if (response.statusCode != 200) throw Exception('통신 에러');
+
+    Map<String, dynamic> body = response.body;
+    Logger().i(body);
+
+    if (body['isSuccess'] == false) {
+      throw Exception(body['message']);
+    }
+    return body['cards'];
   }
 }

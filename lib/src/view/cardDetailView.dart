@@ -58,14 +58,10 @@ class CardDetail extends StatefulWidget {
 }
 
 class _CardDetailState extends State<CardDetail> {
-  Future<void> _onRefresh() async {
-    await cardController.getMyCardList();
-  }
 
   @override
   void initState() {
     super.initState();
-    cardController.getMyCardList();
   }
 
   @override

@@ -16,13 +16,15 @@ class Wallets extends StatefulWidget {
 
 class _WalletsState extends State<Wallets> {
   Future<void> _onRefresh() async {
-    await cardController.getMyCardList();
+    cardController.clearCard();
+    await cardController.getAddingCardList();
   }
 
   @override
   void initState() {
+    cardController.clearCard();
+    cardController.getAddingCardList();
     super.initState();
-    cardController.getMyCardList();
   }
 
   @override
