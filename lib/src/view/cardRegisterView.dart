@@ -26,16 +26,7 @@ class _CardRegisterState extends State<CardRegister> {
   final cardController = Get.put(CardController());
 
   dynamic imageFile;
-  //이미지 가져오는 함수
-  // Future getImage(ImageSource imageSource) async {
-  //   //pickedFile에 ImagePicker로 가져온 이미지가 담긴다.
-  //   final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
-  //   if (pickedFile != null) {
-  //     setState(() {
-  //       _image = File(pickedFile.path); //가져온 이미지를 image에 저장
-  //     });
-  //   }
-  // }
+  
 
   Future<void> _withdrawAlertForm(BuildContext context) async {
     //알림창

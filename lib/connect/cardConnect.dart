@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart' as dioConn;
 import 'package:dio/dio.dart';
-import 'package:get/get_connect.dart' as connect;
+import 'package:get/get_connect.dart'as conn;
 import 'package:frontend/shared/global.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
-import 'package:get/get_connect.dart' as conn;
+
 
 // final GetStorage _storage = GetStorage();
 final ImagePicker _picker = ImagePicker();
@@ -32,13 +32,13 @@ class CardConnect extends GetConnect {
 
   //내명함정보
   getMyCardList() async {
-    String accessToken = _storage.read('access_token') ?? '';
-    String userId = _storage.read('userId') ?? '';
-    connect.Response response = await get(
+    String accessToken = _storage.read('access_token')??'';
+    var userId = _storage.read('userId')??'';
+    conn.Response response = await get(
       '/api/cards',
       query: {'page': "0", 'size': "10"},
       headers: {
-        'userId': await getUserId,
+        'userId': userId.toString(),
         'access_token': accessToken,
       },
     );
@@ -58,6 +58,7 @@ class CardConnect extends GetConnect {
   // 모든 명함 정보 전체 조회
   getAllCardList({int page = 0}) async {
     conn.Response response = await get(
+    conn.Response response = await get(
       '/api/cards',
       query: {'page': page.toString(), 'size': "10"},
     );
@@ -71,6 +72,7 @@ class CardConnect extends GetConnect {
 
   // 명함 만든사람 검색 조회
   getCardListByUsername(String name) async {
+    conn.Response response = await get(
     conn.Response response = await get(
       '/api/cards/search/list/$name',
     );
@@ -127,6 +129,7 @@ class CardConnect extends GetConnect {
       print(formData.fields[0]);
       print(formData.fields[4]);
       print(getToken);
+      print(photo);
       dio.options.headers = {'access_token': getToken};
       var response = await dio.post(
         '${Global.apiRoot}/api/cards/register',

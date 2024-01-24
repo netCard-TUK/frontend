@@ -37,6 +37,16 @@ class UserController extends GetxController {
     }
   }
 
+  //탈퇴하는 함수
+  Future<bool> delete () async{
+    try{
+      await userConnection.sendDelete();
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
+
   //로그인하는 함수, connect 호출할 것임
   Future<bool> login (String email, String password) async{
     try{
