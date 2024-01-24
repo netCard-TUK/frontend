@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/model/cardModel.dart';
 
-class SearchListItem extends StatelessWidget {
+class SearchListItem extends StatefulWidget {
   final CardModel model;
 
   const SearchListItem(this.model, {super.key});
+
+  @override
+  State<SearchListItem> createState() => _SearchListItemState();
+}
+
+class _SearchListItemState extends State<SearchListItem> {
+  void _detailSubmitForm() async {
+    //검색 결과 명함 상세을 누를때 로직
+    Navigator.pushNamed(context, '/detail');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +28,9 @@ class SearchListItem extends StatelessWidget {
           // 사진
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.network("${model.photo}", width: 120, height: 190,
-                errorBuilder: (context, error, stackTrace) {
+            child: Image.network("${widget.model.photo}",
+                width: 120,
+                height: 190, errorBuilder: (context, error, stackTrace) {
               return Image.asset('asset/logo.png', width: 120, height: 180);
             }),
           ),
@@ -30,14 +41,14 @@ class SearchListItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${model.name}",
+                    Text("${widget.model.name}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25,
                           color: Colors.black,
                         )),
                     const SizedBox(height: 6),
-                    Text("소속 : ${model.organization}",
+                    Text("소속 : ${widget.model.organization}",
                         style: const TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 16,
@@ -54,7 +65,9 @@ class SearchListItem extends StatelessWidget {
                 children: [
                   // 상세 버튼
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _detailSubmitForm();
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.black,
                       fixedSize: const Size(80, 70),
