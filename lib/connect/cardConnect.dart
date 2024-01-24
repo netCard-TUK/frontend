@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart' as dioConn;
 import 'package:dio/dio.dart';
-import 'package:get/get_connect.dart'as connect;
+import 'package:get/get_connect.dart' as connect;
 import 'package:frontend/shared/global.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
+import 'package:get/get_connect.dart' as conn;
 
 // final GetStorage _storage = GetStorage();
 final ImagePicker _picker = ImagePicker();
@@ -20,26 +21,19 @@ class CardConnect extends GetConnect {
   final GetStorage _storage;
   CardConnect(this._storage);
 
-  
-
   get getUserId => _storage.read("userId");
   get getToken => _storage.read("access_token");
-  
-
-
 
   // get getUserId => "1";
   // get getToken =>
   //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA1OTk2ODczfQ.cDt-5txoj-YwI53SIvucrqBRHrTU_zConfr8-CzTelo";
-  
+
   //내명함지갑
 
-  
-  
   //내명함정보
   getMyCardList() async {
-    String accessToken = _storage.read('access_token')??'';
-    String userId = _storage.read('userId')??'';
+    String accessToken = _storage.read('access_token') ?? '';
+    String userId = _storage.read('userId') ?? '';
     connect.Response response = await get(
       '/api/cards',
       query: {'page': "0", 'size': "10"},
@@ -63,7 +57,7 @@ class CardConnect extends GetConnect {
 
   // 모든 명함 정보 전체 조회
   getAllCardList({int page = 0}) async {
-    Response response = await get(
+    conn.Response response = await get(
       '/api/cards',
       query: {'page': page.toString(), 'size': "10"},
     );
@@ -77,7 +71,7 @@ class CardConnect extends GetConnect {
 
   // 명함 만든사람 검색 조회
   getCardListByUsername(String name) async {
-    Response response = await get(
+    conn.Response response = await get(
       '/api/cards/search/list/$name',
     );
     if (response.statusCode == null) throw Exception('통신 에러');
@@ -129,7 +123,7 @@ class CardConnect extends GetConnect {
         'photo',
         await dioConn.MultipartFile.fromFile(photo),
       ));
-
+      print(photo);
       print(formData.fields[0]);
       print(formData.fields[4]);
       print(getToken);
