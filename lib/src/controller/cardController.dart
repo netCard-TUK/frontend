@@ -64,7 +64,6 @@ class CardController extends GetxController {
 
   // 내 지갑에 명함 추가
   Future<bool> addCard(int cardId) async {
-
     try {
       await cardConnect.addCard(cardId);
       return true;
@@ -77,7 +76,6 @@ class CardController extends GetxController {
   }
 
   // 내 지갑에서 명함 삭제
-
 
   //명함 지갑 조회
 
@@ -96,7 +94,6 @@ class CardController extends GetxController {
       return false;
     }
   }
-}
 
   Future<bool> cardUpdate(String position, String organization, String address,
       int tell, String email, dynamic cardId) async {

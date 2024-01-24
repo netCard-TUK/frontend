@@ -54,8 +54,9 @@ class CardConnect extends GetConnect {
 
   //내 지갑에 명함 추가
   addCard(int cardId) async {
-    String accessToken = _storage.read('access_token') ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA2MDg0MTYwfQ.Yep1MjQA0eJVHM57GLfYP1vp8qg6c4IHzVRW3mvbUNk';
-    String userId = _storage.read('userId') ?? '1';
+    String accessToken = _storage.read('access_token') ??
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA2MDg0MTYwfQ.Yep1MjQA0eJVHM57GLfYP1vp8qg6c4IHzVRW3mvbUNk';
+    String userId = _storage.read('userId').toString() ?? '1';
 
     print("userId: $userId");
 
@@ -64,7 +65,7 @@ class CardConnect extends GetConnect {
       'cardId': cardId.toString(),
     };
 
-    connect.Response response = await post(
+    conn.Response response = await post(
       '/api/wallets',
       requestBody,
       headers: {
@@ -185,9 +186,11 @@ class CardConnect extends GetConnect {
 
   // 추가한 명함들 조회
   getAddingCardList({int page = 0}) async {
-    String accessToken = _storage.read('access_token') ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA2MDg0MTYwfQ.Yep1MjQA0eJVHM57GLfYP1vp8qg6c4IHzVRW3mvbUNk';
-    String userId = _storage.read('userId') ?? '1';
-    connect.Response response = await get(
+    String accessToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTcwNjEwODk4Nn0.6z2VPgqKMDlkZxvM6pU_Jyaw3q9fXbz1HbJoHzaEaiQ';
+    int userId = _storage.read('userId') ?? 1;
+    print("userId: $userId");
+    conn.Response response = await get(
       '/api/wallets/users/$userId',
       query: {'page': page.toString(), 'size': "1000"},
       headers: {
@@ -198,8 +201,7 @@ class CardConnect extends GetConnect {
     if (response.statusCode != 200) throw Exception('통신 에러');
 
     Map<String, dynamic> body = response.body;
-    print("body");
-    print(body);
+    Logger().i(body);
 
     if (body['isSuccess'] == false) {
       throw Exception(body['message']);

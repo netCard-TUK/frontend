@@ -17,7 +17,6 @@ class WalletListItem extends StatefulWidget {
 }
 
 class _WalletListItemState extends State<WalletListItem> {
-
   final String defaultImage = Global.defaultImage;
 
   void _detailSubmitForm() async {
@@ -45,7 +44,10 @@ class _WalletListItemState extends State<WalletListItem> {
           // 사진
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.network(widget.model.photo == null ? defaultImage : "${widget.model.photo}",
+            child: Image.network(
+                widget.model.photo == null
+                    ? defaultImage
+                    : "${widget.model.photo}",
                 width: 120,
                 height: 190, errorBuilder: (context, error, stackTrace) {
               return Image.asset('asset/logo.png', width: 120, height: 180);
@@ -61,14 +63,14 @@ class _WalletListItemState extends State<WalletListItem> {
                     Text("${widget.model.name}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.black,
                         )),
                     const SizedBox(height: 6),
                     Text("소속 : ${widget.model.organization}",
                         style: const TextStyle(
                           fontWeight: FontWeight.normal,
-                          fontSize: 16,
+                          fontSize: 10,
                           color: Colors.black,
                         ))
                   ],

@@ -4,10 +4,7 @@ import 'package:get/get.dart';
 
 import '../../shared/global.dart';
 
-
-
 class DetailItem extends StatelessWidget {
-
   final CardModel model;
 
   const DetailItem(this.model, {super.key});
@@ -25,7 +22,10 @@ class DetailItem extends StatelessWidget {
                 // 사진
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.network(model.photo == null ? Global.defaultImage : "${model.photo}",
+                  child: Image.network(
+                      model.photo == null
+                          ? Global.defaultImage
+                          : "${model.photo}",
                       width: 120,
                       height: 190, errorBuilder: (context, error, stackTrace) {
                     return Image.asset('asset/logo.png',
@@ -44,13 +44,6 @@ class DetailItem extends StatelessWidget {
                           fontSize: 30,
                           color: Colors.black,
                         )),
-                    const SizedBox(height: 6),
-                    Text("${model.phone}",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 20,
-                          color: Colors.black,
-                        ))
                   ],
                 ),
               ]),
