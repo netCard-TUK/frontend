@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/connect/cardConnect.dart';
 import 'package:frontend/src/model/cardModel.dart';
-import 'package:frontend/src/view/mycardView.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 final GetStorage _storage = GetStorage();
 
 final cardConnect = Get.put(CardConnect());
-
-  
 
 //명함 관련 모든 상태를 공통으로 관리하는 컨트롤러
 class CardController extends GetxController{
@@ -32,6 +29,15 @@ class CardController extends GetxController{
     List<CardModel> tmp = jsonData.map((m) => CardModel.parse(m)).toList();
     list.addAll(tmp);
     update();
+  }
+
+  // 모든 명함 정보 전체 조회
+  Future<List<CardModel>> getAllCardList({int page = 0}) async {
+    List jsonData = await cardConnect.getAllCardList(page : page);
+    List<CardModel> tmp = jsonData.map((m) => CardModel.parse(m)).toList();
+    list.addAll(tmp);
+    update();
+    return tmp;
   }
 
   //명함 등록
