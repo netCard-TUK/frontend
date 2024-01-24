@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart' as dioConn;
 import 'package:dio/dio.dart';
-import 'package:get/get_connect.dart' as connect;
+import 'package:get/get_connect.dart' as conn;
 import 'package:frontend/shared/global.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -32,8 +32,8 @@ class CardConnect extends GetConnect {
   //내명함정보
   getMyCardList() async {
     String accessToken = _storage.read('access_token') ?? '';
-    String userId = _storage.read('userId') ?? '';
-    connect.Response response = await get(
+    var userId = _storage.read('userId') ?? '';
+    conn.Response response = await get(
       '/api/cards',
       query: {'page': "0", 'size': "10"},
       headers: {
@@ -83,7 +83,7 @@ class CardConnect extends GetConnect {
 
   // 모든 명함 정보 전체 조회
   getAllCardList({int page = 0}) async {
-    connect.Response response = await get(
+    conn.Response response = await get(
       '/api/cards',
       query: {'page': page.toString(), 'size': "10"},
     );
@@ -97,7 +97,7 @@ class CardConnect extends GetConnect {
 
   // 명함 만든사람 검색 조회
   getCardListByUsername(String name) async {
-    connect.Response response = await get(
+    conn.Response response = await get(
       '/api/cards/search/list/$name',
     );
     if (response.statusCode == null) throw Exception('통신 에러');
@@ -120,7 +120,6 @@ class CardConnect extends GetConnect {
     try {
       dio.options.contentType = 'multipart/form-data';
       dio.options.maxRedirects.isFinite;
-      print(1);
       dioConn.FormData formData = dioConn.FormData.fromMap({
         'userId': getUserId,
         'position': position,
@@ -133,16 +132,41 @@ class CardConnect extends GetConnect {
         'photo',
         await dioConn.MultipartFile.fromFile(photo),
       ));
-
-      print(formData.fields[0]);
-      print(formData.fields[4]);
-      print(getToken);
       dio.options.headers = {'access_token': getToken};
       var response = await dio.post(
         '${Global.apiRoot}/api/cards/register',
         data: formData,
       );
-      print(response);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  cardUpdate(
+    String position,
+    String organization,
+    String address,
+    int tell,
+    String email,
+    dynamic cardId,
+  ) async {
+    var dio = new Dio();
+    try {
+      dio.options.contentType = 'multipart/form-data';
+      dio.options.maxRedirects.isFinite;
+      dioConn.FormData formData = dioConn.FormData.fromMap({
+        'userId': getUserId,
+        'position': position,
+        'organization': organization,
+        'address': address,
+        'tell': tell,
+        'email': email,
+      });
+      dio.options.headers = {'access_token': getToken};
+      var response = await dio.post(
+        '${Global.apiRoot}/api/cards/update/$cardId',
+        data: formData,
+      );
     } catch (e) {
       print(e);
     }

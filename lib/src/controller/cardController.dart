@@ -97,3 +97,19 @@ class CardController extends GetxController {
     }
   }
 }
+
+  Future<bool> cardUpdate(String position, String organization, String address,
+      int tell, String email, dynamic cardId) async {
+    try {
+      await cardConnect.cardUpdate(
+          position, organization, address, tell, email, cardId);
+      // await feedIndex();
+      return true;
+    } catch (e) {
+      ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+        content: Text("$e"),
+      ));
+      return false;
+    }
+  }
+}

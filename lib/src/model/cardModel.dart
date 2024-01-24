@@ -11,7 +11,7 @@ class CardModel {
   String? name;
   int? phone;
   //이미지(photo) int로 변경
-  String? photo;
+  dynamic photo;
 
   CardModel.parse(Map m) {
     cardId = m['card_id'];
@@ -22,8 +22,7 @@ class CardModel {
     address = m['address'];
     phone = m['phone'];
     email = m['email'];
-    photo = m['image'];
+    photo = m['photo'];
     tell = m['tell'];
   }
-  
 }

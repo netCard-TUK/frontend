@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/controller/userController.dart';
 import 'package:frontend/src/widget/bottomNavigation.dart';
+import 'package:get/get.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
@@ -9,6 +11,7 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPage extends State<MyPage> {
+  final userController = Get.put(UserController());
   void _walletsSubmitForm() async {
     //내 명함 지갑 버튼을 누를때 로직
     await Navigator.pushNamed(context, '/wallets');
@@ -17,6 +20,14 @@ class _MyPage extends State<MyPage> {
   void _cardsSubmitForm() async {
     //내 명함 확인 버튼을 누를때 로직
     Navigator.pushNamed(context, '/cards');
+  }
+
+  void _deleteSubmitForm() async{
+    bool result = await userController.delete();
+  }
+
+  void _logoutSubmitForm() async{
+    Navigator.pushNamed(context, '/login');
   }
 
   void _withdrawAlertForm(BuildContext context) async {
@@ -39,7 +50,9 @@ class _MyPage extends State<MyPage> {
               TextButton(
                 child: Text('확인'),
                 onPressed: () {
+                  _deleteSubmitForm();
                   Navigator.of(context).pop();
+                  _logoutSubmitForm();
                 },
               ),
             ],
@@ -68,6 +81,7 @@ class _MyPage extends State<MyPage> {
                 child: Text('확인'),
                 onPressed: () {
                   Navigator.of(context).pop();
+                  _logoutSubmitForm();
                 },
               ),
             ],
