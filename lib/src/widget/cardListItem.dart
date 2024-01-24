@@ -16,9 +16,9 @@ class _CardListItemState extends State<CardListItem> {
     Navigator.pushNamed(context, '/detail');
   }
 
-  void _cardUpdateForm() async {
+  void _cardUpdateForm(cardId) async {
     // 수정 버튼을 누를때 로직
-    Navigator.pushNamed(context, '/wallets');
+    Navigator.pushNamed(context, '/update', arguments: cardId);
   }
 
   @override
@@ -86,7 +86,7 @@ class _CardListItemState extends State<CardListItem> {
                   // 수정 버튼
                   ElevatedButton(
                     onPressed: () {
-                      _cardUpdateForm();
+                      _cardUpdateForm(widget.model.cardId);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.black,

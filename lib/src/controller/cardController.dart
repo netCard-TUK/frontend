@@ -8,13 +8,9 @@ final GetStorage _storage = GetStorage();
 
 final cardConnect = Get.put(CardConnect(_storage));
 
-  
-
 //명함 관련 모든 상태를 공통으로 관리하는 컨트롤러
-class CardController extends GetxController{
-
+class CardController extends GetxController {
   CardModel? card;
-
 
   List<CardModel> list = [];
 
@@ -30,7 +26,7 @@ class CardController extends GetxController{
 
   // 모든 명함 정보 전체 조회
   Future<List<CardModel>> getAllCardList({int page = 0}) async {
-    List jsonData = await cardConnect.getAllCardList(page : page);
+    List jsonData = await cardConnect.getAllCardList(page: page);
     List<CardModel> tmp = jsonData.map((m) => CardModel.parse(m)).toList();
     list.addAll(tmp);
     update();
@@ -45,8 +41,6 @@ class CardController extends GetxController{
     update();
     return tmp;
   }
-
-  
 
   //명함 지갑 조회
 
@@ -65,4 +59,18 @@ class CardController extends GetxController{
     }
   }
 
+  Future<bool> cardUpdate(String position, String organization, String address,
+      int tell, String email, dynamic cardId) async {
+    try {
+      await cardConnect.cardUpdate(
+          position, organization, address, tell, email, cardId);
+      // await feedIndex();
+      return true;
+    } catch (e) {
+      ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+        content: Text("$e"),
+      ));
+      return false;
+    }
+  }
 }

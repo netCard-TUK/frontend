@@ -110,7 +110,6 @@ class CardConnect extends GetConnect {
     try {
       dio.options.contentType = 'multipart/form-data';
       dio.options.maxRedirects.isFinite;
-      print(1);
       dioConn.FormData formData = dioConn.FormData.fromMap({
         'userId': getUserId,
         'position': position,
@@ -123,16 +122,41 @@ class CardConnect extends GetConnect {
         'photo',
         await dioConn.MultipartFile.fromFile(photo),
       ));
-      print(photo);
-      print(formData.fields[0]);
-      print(formData.fields[4]);
-      print(getToken);
       dio.options.headers = {'access_token': getToken};
       var response = await dio.post(
         '${Global.apiRoot}/api/cards/register',
         data: formData,
       );
-      print(response);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  cardUpdate(
+    String position,
+    String organization,
+    String address,
+    int tell,
+    String email,
+    dynamic cardId,
+  ) async {
+    var dio = new Dio();
+    try {
+      dio.options.contentType = 'multipart/form-data';
+      dio.options.maxRedirects.isFinite;
+      dioConn.FormData formData = dioConn.FormData.fromMap({
+        'userId': getUserId,
+        'position': position,
+        'organization': organization,
+        'address': address,
+        'tell': tell,
+        'email': email,
+      });
+      dio.options.headers = {'access_token': getToken};
+      var response = await dio.post(
+        '${Global.apiRoot}/api/cards/update/$cardId',
+        data: formData,
+      );
     } catch (e) {
       print(e);
     }

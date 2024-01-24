@@ -18,7 +18,6 @@ class CardUpdate extends StatefulWidget {
 }
 
 class _CardUpdateState extends State<CardUpdate> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _positionController = TextEditingController();
   final TextEditingController _organizationController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -30,6 +29,7 @@ class _CardUpdateState extends State<CardUpdate> {
   final cardController = Get.put(CardController());
 
   int? fileId;
+  dynamic imageFile;
 
   //이미지 가져오는 함수
   // Future getImage(ImageSource imageSource) async {
@@ -42,16 +42,7 @@ class _CardUpdateState extends State<CardUpdate> {
   //   }
   // }
 
-  void uploadImage() async {
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    if (image == null) return;
-    int id = await cardController.upload(image.name, image.path);
-    setState(() {
-      fileId = id;
-    });
-  }
-
-  void _withdrawAlertForm(BuildContext context) async {
+  Future<void> _withdrawAlertForm(BuildContext context) async {
     //알림창
     return showDialog<void>(
         // 다이얼로그 위젯 소환
@@ -73,7 +64,7 @@ class _CardUpdateState extends State<CardUpdate> {
         });
   }
 
-  void _withdrawAlertForm2(BuildContext context) async {
+  Future<void> _withdrawAlertForm2(BuildContext context) async {
     //알림창
     return showDialog<void>(
         // 다이얼로그 위젯 소환
@@ -96,22 +87,26 @@ class _CardUpdateState extends State<CardUpdate> {
   }
 
   //저장 버튼을 눌렀을 때 실행되는 함수
-  void _saveFrom() async {
-    final String position = _positionController.text;
-    final String organization = _organizationController.text;
-    final String address = _addressController.text;
-    final String email = _emailController.text;
-    final int tell = int.parse(_tellController.text);
-
-    //저장 로직 추가
-    bool result = await cardController.cardRegister(
-        position, organization, address, tell, email, fileId);
-
-    if (result == true) {
-      _withdrawAlertForm2(context);
+  Future<void> _saveForm() async {
+    try {
+      dynamic cardId = ModalRoute.of(context)!.settings.arguments;
+      int tell = int.tryParse(_tellController.text) ?? 0;
+      // 이미지 파일을 CardController로 직접 전달
+      bool result = await cardController.cardUpdate(
+          _positionController.text,
+          _organizationController.text,
+          _addressController.text,
+          tell,
+          _emailController.text,
+          cardId);
+      print(result);
+      if (result) {
+        await _withdrawAlertForm2(context);
+      }
       Get.back();
-    } else {
-      _withdrawAlertForm(context);
+    } catch (e) {
+      print(e);
+      await _withdrawAlertForm(context);
     }
   }
 
@@ -127,13 +122,6 @@ class _CardUpdateState extends State<CardUpdate> {
         child: ListView(
           padding: EdgeInsets.fromLTRB(30, 15, 30, 5),
           children: [
-            ImageButton(
-              imageUrl: fileId == null
-                  ? null
-                  : "${Global.apiRoot}/api/cards/register/",
-              onTap: uploadImage,
-            ),
-
             const SizedBox(height: 10),
             //직함
             TextFormField(
@@ -224,7 +212,7 @@ class _CardUpdateState extends State<CardUpdate> {
             const SizedBox(height: 20),
             //수정버튼
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () => _saveForm(),
               child: Text(
                 '수정',
                 style: TextStyle(
