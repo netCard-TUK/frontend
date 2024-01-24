@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/controller/cardController.dart';
 import 'package:get/get.dart';
 
+import '../widget/bottomNavigation.dart';
 import '../widget/cardListItem.dart';
 import '../widget/bottomNavigation.dart';
 import '../widget/cardListItem.dart';

@@ -21,41 +21,47 @@ class UserConnect extends GetConnect{
     });
 
     //로그 찍어보기
-    Logger().i(response.printError);
     Logger().i(response.statusCode);
 
     if(response.statusCode == null) throw Exception('통신에러');
     Map<String, dynamic> body = response.body;
 
-    if (body['result'] == 'fail') {
+    if(body['isSuccess'] == 'fail'){
       throw Exception(body['message']);
     }
-    Logger().i(body['access_token']);
+    Logger().i(body);
+  
     return body['access_token'];
   }
 
   //로그인 통신
-  Future sendLogin(String email, String password) async {
+  Future<Map<String, dynamic>> sendLogin(String email, String password) async {
     Response response = await post('/api/users/login',
     {
         'email' : email,
         'password' : password,
     });
 
-    Logger().i(response.printError);
+    Logger().i(response.body);
     Logger().i(response.statusCode);
 
     Map<String, dynamic> body = response.body;
-
-    if (body['result'] == 'fail') {
+  
+    if(body['isSuccess'] == 'fail'){
       throw Exception(body['message']);
     }
-    return body['access_token'];
+    Logger().i(response.body['access_token']);
+
+    return body;
   }
 
 
   get getToken async{
     return _storage.read("accessToken");
+  }
+
+  get getUserId async{
+    return _storage.read("userId");
   }
 
   @override
