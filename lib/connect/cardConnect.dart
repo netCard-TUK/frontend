@@ -42,8 +42,6 @@ class CardConnect extends GetConnect {
       },
     );
 
-    print(response.body);
-
     if (response.statusCode == null) throw Exception('통신 에러');
 
     Map<String, dynamic> body = response.body;

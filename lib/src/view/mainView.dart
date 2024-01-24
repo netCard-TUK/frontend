@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/widget/NoneCard.dart';
 import 'package:frontend/src/widget/bottomNavigation.dart';
+import 'package:frontend/src/widget/searchListItem.dart';
+import 'package:frontend/src/widget/walletListItem.dart';
 import 'package:get/get.dart';
 
 import '../controller/cardController.dart';
