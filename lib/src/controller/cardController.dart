@@ -6,7 +6,9 @@ import 'package:get_storage/get_storage.dart';
 
 final GetStorage _storage = GetStorage();
 
-final cardConnect = Get.put(CardConnect());
+final cardConnect = Get.put(CardConnect(_storage));
+
+  
 
 //명함 관련 모든 상태를 공통으로 관리하는 컨트롤러
 class CardController extends GetxController{
@@ -44,21 +46,23 @@ class CardController extends GetxController{
     return tmp;
   }
 
-  //명함 등록
-  Future<bool> cardRegister(String position, String organization, String address, int tell, String email, int? photo) async{
-    try{
-      await cardConnect.cardRegister(position, organization, address, tell, email, photo: photo);
+  
+
+  //명함 지갑 조회
+
+  Future<bool> cardRegister(String position, String organization,
+      String address, int tell, String email, dynamic photo) async {
+    try {
+      await cardConnect.cardRegister(
+          position, organization, address, tell, email, photo);
       // await feedIndex();
       return true;
-    }catch(e){
-      ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(content: Text("$e"),));
+    } catch (e) {
+      ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+        content: Text("$e"),
+      ));
       return false;
     }
-  }
-  //이미지 업로드
-  Future<int> upload(String name, String path) async{
-    Map data = await cardConnect.imageUpload(name,path);
-    return data['id'];
   }
 
 }
