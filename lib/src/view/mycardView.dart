@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 
 import '../widget/cardListItem.dart';
 import '../widget/bottomNavigation.dart';
-import '../widget/cardListItem.dart';
 
 final cardController = Get.put(CardController());
 

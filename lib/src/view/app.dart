@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/view/cardRegisterView.dart';
+import 'package:frontend/src/view/cardUpdateView.dart';
 import 'package:frontend/src/view/index.dart';
 import 'package:frontend/src/view/loginView.dart';
 import 'package:frontend/src/view/mainView.dart';
@@ -31,10 +32,11 @@ class MyApp extends StatelessWidget {
         '/wallets': (context) => Wallets(),
         '/search': (context) => SearchView(),
         '/detail': (context) => CardDetail(),
+        '/update': (context) => CardUpdate(),
         // '/search': (context) => FeedIndex(),
       },
       initialRoute: '/',
-      home: CardRegister(),
+      home: MyCardsView(),
     );
   }
 }
