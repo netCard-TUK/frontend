@@ -20,11 +20,6 @@ class CardController extends GetxController{
   getMyCardList() async {
     var name = await cardConnect.getMyCardList();
 
-    // print("name");
-    // print(name);
-
-    // List jsonData = name;
-
     List jsonData = await cardConnect.getMyCardList();
     List<CardModel> tmp = jsonData.map((m) => CardModel.parse(m)).toList();
     list.addAll(tmp);
@@ -34,6 +29,15 @@ class CardController extends GetxController{
   // 모든 명함 정보 전체 조회
   Future<List<CardModel>> getAllCardList({int page = 0}) async {
     List jsonData = await cardConnect.getAllCardList(page : page);
+    List<CardModel> tmp = jsonData.map((m) => CardModel.parse(m)).toList();
+    list.addAll(tmp);
+    update();
+    return tmp;
+  }
+
+  // 명함 만든사람 검색 조회
+  Future<List<CardModel>> getCardListByUsername(String name) async {
+    List jsonData = await cardConnect.getCardListByUsername(name);
     List<CardModel> tmp = jsonData.map((m) => CardModel.parse(m)).toList();
     list.addAll(tmp);
     update();

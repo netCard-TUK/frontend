@@ -36,7 +36,7 @@ class FeedListItem extends StatelessWidget {
               const SizedBox(height: 6),
               Text(model.organization ?? '회사'),
               const SizedBox(height: 6),
-              Text(model.phone ?? '번호'),
+              // Text(model.phone ?? '번호'),
             ],
           ),
         ),

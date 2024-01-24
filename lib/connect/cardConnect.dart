@@ -56,6 +56,19 @@ class CardConnect extends GetConnect {
     return body['result'];
   }
 
+  // 명함 만든사람 검색 조회
+  getCardListByUsername(String name) async {
+    Response response = await get(
+      '/api/cards/search/list/$name',
+    );
+    if (response.statusCode == null) throw Exception('통신 에러');
+    Map<String, dynamic> body = response.body;
+    if (body['isSuccess'] == false) {
+      throw Exception(body['message']);
+    }
+    return body['result'];
+  }
+
   //이미지 업로드
   imageUpload(String name, String path) async{
     final form = FormData({'file': MultipartFile(path,filename:name)});
