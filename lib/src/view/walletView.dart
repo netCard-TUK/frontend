@@ -1,16 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/widget/bottomNavigation.dart';
+import 'package:frontend/src/controller/cardController.dart';
+import 'package:get/get.dart';
 
-class Wallets extends StatelessWidget {
+import '../widget/bottomNavigation.dart';
+import '../widget/walletListItem.dart';
+
+final cardController = Get.put(CardController());
+
+class Wallets extends StatefulWidget {
   const Wallets({super.key});
+
+  @override
+  State<Wallets> createState() => _WalletsState();
+}
+
+class _WalletsState extends State<Wallets> {
+  Future<void> _onRefresh() async {
+    await cardController.getMyCardList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    cardController.getMyCardList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNav(),
-      body: Center(
-        child: Text('내 명함 지갑 입니다'),
+      bottomNavigationBar: const BottomNav(),
+      appBar: AppBar(
+        title: const Text(
+          '명함 지갑',
+          textAlign: TextAlign.center,
+        ),
+        centerTitle: true,
+        backgroundColor: const Color(0xffC4DCED),
       ),
+      body: GetBuilder<CardController>(builder: (controller) {
+        return RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: ListView.builder(
+              itemCount: controller.list.length,
+              itemBuilder: (context, index) {
+                return WalletListItem(controller.list[index]);
+              }),
+        );
+      }),
     );
   }
 }

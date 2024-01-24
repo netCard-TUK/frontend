@@ -9,7 +9,7 @@ final GetStorage _storage = GetStorage();
 
 //회원 동작과 관련된 모든 상태들을 공통으로 관리하는 컨트롤러
 
-class UserController extends GetxController{
+class UserController extends GetxController {
   // UserConnect 객체를 생성 (의존성 주입)
   final userConnection = Get.put(UserConnect());
   late SharedPreferences prefs;
@@ -37,21 +37,21 @@ class UserController extends GetxController{
       print(e);
       return false;
     }
-
   }
-  
+
   //로그인하는 함수, connect 호출할 것임
-  Future<bool> login (String email, String password) async{
-    try{
+  Future<bool> login(String email, String password) async {
+    try {
       String token = await userConnection.sendLogin(email, password);
       await _storage.write('access_token', token);
       return true;
-    }catch(e){
-      if(Get.context != null){
-        ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(content: Text("$e"),
+    } catch (e) {
+      if (Get.context != null) {
+        ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+          content: Text("$e"),
         ));
       }
-      
+
       return false;
     }
   }

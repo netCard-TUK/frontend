@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/model/cardModel.dart';
 
-class CardListItem extends StatelessWidget {
+class WalletListItem extends StatelessWidget {
   final CardModel model;
 
-  const CardListItem(this.model, {super.key});
+  const WalletListItem(this.model, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class CardListItem extends StatelessWidget {
               height: 100,
               child: Row(
                 children: [
-                  // 수정 버튼
+                  // 상세 버튼
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
@@ -63,7 +63,21 @@ class CardListItem extends StatelessWidget {
                         fontSize: 17,
                       ), // 원하는 크기 설정
                     ),
-                    child: const Text('수정'),
+                    child: const Text('상세'),
+                  ),
+                  const SizedBox(width: 10),
+                  // 삭제 버튼
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      fixedSize: const Size(80, 70),
+                      backgroundColor: const Color(0xffC4DCED),
+                      textStyle: const TextStyle(
+                        fontSize: 17,
+                      ), // 원하는 크기 설정
+                    ),
+                    child: const Text('삭제'),
                   ),
                   const SizedBox(width: 10),
                 ],
