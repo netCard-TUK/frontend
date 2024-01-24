@@ -16,6 +16,10 @@ class _WalletListItemState extends State<WalletListItem> {
     Navigator.pushNamed(context, '/detail');
   }
 
+  void _delete() async {
+    //검색 결과 명함 삭제을 누를때 로직
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(

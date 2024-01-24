@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart' as dioConn;
 import 'package:dio/dio.dart';
-import 'package:get/get_connect.dart'as connect;
+import 'package:get/get_connect.dart' as connect;
 import 'package:frontend/shared/global.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -20,31 +20,24 @@ class CardConnect extends GetConnect {
   final GetStorage _storage;
   CardConnect(this._storage);
 
-  
-
   get getUserId => _storage.read("userId");
   get getToken => _storage.read("access_token");
-  
-
-
 
   // get getUserId => "1";
   // get getToken =>
   //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA1OTk2ODczfQ.cDt-5txoj-YwI53SIvucrqBRHrTU_zConfr8-CzTelo";
-  
+
   //내명함지갑
 
-  
-  
   //내명함정보
   getMyCardList() async {
-    String accessToken = _storage.read('access_token')??'';
-    String userId = _storage.read('userId')??'';
+    String accessToken = _storage.read('access_token') ?? '';
+    String userId = _storage.read('userId') ?? '';
     connect.Response response = await get(
       '/api/cards',
       query: {'page': "0", 'size': "10"},
       headers: {
-        'userId': await getUserId,
+        'userId': userId,
         'access_token': accessToken,
       },
     );
@@ -61,9 +54,38 @@ class CardConnect extends GetConnect {
     return body['result'];
   }
 
+  //내 지갑에 명함 추가
+  addCard(int cardId) async {
+    String accessToken = _storage.read('access_token') ?? '';
+    String userId = _storage.read('userId') ?? '';
+
+    print("userId: $userId");
+
+    Map<String, int> requestBody = {
+      'userId': int.parse(userId),
+      'cardId': cardId,
+    };
+
+    connect.Response response = await post(
+      '/api/wallets',
+      requestBody,
+      headers: {
+        'access_token': accessToken,
+      },
+    );
+    if (response.statusCode == null) throw Exception('통신 에러');
+    Map<String, dynamic> body = response.body;
+    if (body['isSuccess'] == false) {
+      throw Exception(body['message']);
+    }
+
+    print(body);
+    return;
+  }
+
   // 모든 명함 정보 전체 조회
   getAllCardList({int page = 0}) async {
-    Response response = await get(
+    connect.Response response = await get(
       '/api/cards',
       query: {'page': page.toString(), 'size': "10"},
     );
@@ -77,7 +99,7 @@ class CardConnect extends GetConnect {
 
   // 명함 만든사람 검색 조회
   getCardListByUsername(String name) async {
-    Response response = await get(
+    connect.Response response = await get(
       '/api/cards/search/list/$name',
     );
     if (response.statusCode == null) throw Exception('통신 에러');

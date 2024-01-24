@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/model/cardModel.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../controller/cardController.dart';
+
+final cardController = Get.put(CardController());
 
 class SearchListItem extends StatefulWidget {
   final CardModel model;
@@ -14,6 +20,11 @@ class _SearchListItemState extends State<SearchListItem> {
   void _detailSubmitForm() async {
     //검색 결과 명함 상세을 누를때 로직
     Navigator.pushNamed(context, '/detail');
+  }
+
+  void _add() async {
+    //검색 결과 명함 추가을 누를때 로직
+    await cardController.addCard(widget.model.cardId!);
   }
 
   @override
@@ -81,7 +92,9 @@ class _SearchListItemState extends State<SearchListItem> {
                   const SizedBox(width: 10),
                   // 추가 버튼
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _add();
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.black,
                       fixedSize: const Size(80, 70),

@@ -45,10 +45,10 @@ class _CardUpdateState extends State<CardUpdate> {
   void uploadImage() async {
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image == null) return;
-    int id = await cardController.upload(image.name, image.path);
-    setState(() {
-      fileId = id;
-    });
+    // int id = await cardController.upload(image.name, image.path);
+    // setState(() {
+    //   fileId = id;
+    // });
   }
 
   void _withdrawAlertForm(BuildContext context) async {
