@@ -16,7 +16,7 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   Future<void> _onRefresh() async {
-    await cardController.getMyCardList();
+    await cardController.getAllCardList();
   }
 
   @override

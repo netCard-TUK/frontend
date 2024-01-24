@@ -14,25 +14,6 @@ class MyCardConnect extends GetConnect {
   get getUserId => "1";
   get getToken => "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA1OTk2ODczfQ.cDt-5txoj-YwI53SIvucrqBRHrTU_zConfr8-CzTelo";
 
-  getMyCardList() async {
-    Response response = await get(
-      '/cards',
-      query: {'page': "0", 'size': "10"},
-      headers: {'access_token': await getUserId},
-    );
-
-    print(response.body);
-
-    if (response.statusCode == null) throw Exception('통신 에러');
-
-    Map<String, dynamic> body = response.body;
-
-    if (body['isSuccess'] == false) {
-      throw Exception(body['message']);
-    }
-    return body['result'];
-  }
-
   // storeItem(String title, String price, String content, {int? imageId}) async {
   //   Response response = await post(
   //     '/api/feed',

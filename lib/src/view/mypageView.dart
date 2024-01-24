@@ -11,7 +11,7 @@ class MyPage extends StatefulWidget {
 class _MyPage extends State<MyPage> {
   void _walletsSubmitForm() async {
     //내 명함 지갑 버튼을 누를때 로직
-    Navigator.pushNamed(context, '/wallets');
+    await Navigator.pushNamed(context, '/wallets');
   }
 
   void _cardsSubmitForm() async {

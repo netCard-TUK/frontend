@@ -26,7 +26,7 @@ class _MainState extends State<Main> {
 
   Future<void> _onRefresh() async {
     page = 0;
-    cardController.list.clear();
+    cardController.clearCard();
 
     if (_searchController.text.isNotEmpty) {
       await cardController.getCardListByUsername(_searchController.text);
@@ -55,7 +55,7 @@ class _MainState extends State<Main> {
 
   Future<void> _searchSubmitForm() async {
     //검색 버튼을 누를때 로직
-    cardController.list.clear();
+    cardController.clearCard();
 
     cardController.list =
         await cardController.getCardListByUsername(_searchController.text);
