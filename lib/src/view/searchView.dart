@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/controller/cardController.dart';
 import 'package:get/get.dart';
 
-import '../widget/cardListItem.dart';
 import '../widget/bottomNavigation.dart';
-import '../widget/cardListItem.dart';
+import '../widget/searchListItem.dart';
 
 final cardController = Get.put(CardController());
 
-class MyCardsView extends StatefulWidget {
-  const MyCardsView({super.key});
+class SearchView extends StatefulWidget {
+  const SearchView({super.key});
 
   @override
-  State<MyCardsView> createState() => _MyCardsViewState();
+  State<SearchView> createState() => _SearchViewState();
 }
 
-class _MyCardsViewState extends State<MyCardsView> {
+class _SearchViewState extends State<SearchView> {
   Future<void> _onRefresh() async {
     await cardController.getMyCardList();
   }
@@ -32,7 +31,7 @@ class _MyCardsViewState extends State<MyCardsView> {
       bottomNavigationBar: const BottomNav(),
       appBar: AppBar(
         title: const Text(
-          '내 명함',
+          '검색 결과',
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
@@ -44,7 +43,7 @@ class _MyCardsViewState extends State<MyCardsView> {
           child: ListView.builder(
               itemCount: controller.list.length,
               itemBuilder: (context, index) {
-                return CardListItem(controller.list[index]);
+                return SearchListItem(controller.list[index]);
               }),
         );
       }),
