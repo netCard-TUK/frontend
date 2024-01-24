@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/widget/NoneCard.dart';
 import 'package:frontend/src/widget/bottomNavigation.dart';
+import 'package:get/get.dart';
+
+import '../controller/cardController.dart';
+import '../widget/cardListItem.dart';
+
+final CardController cardController = Get.put(CardController());
 
 //클래스명: Main
 class Main extends StatefulWidget {
@@ -10,9 +17,46 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  void _searchSubmitForm() async {
+
+  final TextEditingController _searchController = TextEditingController();
+
+  int page = 0;
+
+  Future<void> _onRefresh() async {
+    page = 0;
+    cardController.list.clear();
+
+    if(_searchController.text.isNotEmpty) {
+      await cardController.getCardListByUsername(_searchController.text);
+      return;
+    }
+    await cardConnect.getAllCardList(page: page);
+  }
+
+  bool _onNotification(ScrollNotification scrollInfo) {
+    if(_searchController.text.isNotEmpty) return false;
+
+    if (scrollInfo is ScrollEndNotification &&
+        scrollInfo.metrics.extentAfter == 0) {
+      cardController.getAllCardList(page: ++page);
+      return true;
+    }
+
+    return false;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    cardController.getAllCardList();
+  }
+
+  Future<void> _searchSubmitForm() async {
     //검색 버튼을 누를때 로직
-    Navigator.pushNamed(context, '/search');
+    cardController.list.clear();
+
+    cardController.list = await cardController.getCardListByUsername(_searchController.text);
+
   }
 
   @override
@@ -37,8 +81,9 @@ class _MainState extends State<Main> {
             ),
             Flexible(
               flex: 1,
-              child: TextField(
-                decoration: InputDecoration(
+              child: TextFormField(
+                controller: _searchController,
+                decoration: const InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
                     vertical: 8,
                     horizontal: 16,
@@ -67,21 +112,22 @@ class _MainState extends State<Main> {
       bottomNavigationBar: BottomNav(),
       
       //중단
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset('asset/logo.png'),
-            const SizedBox(height: 40),
-            const Text(
-              '검색해서 명함을 찾아보세요',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+      body: GetBuilder<CardController>( builder: (controller) {
+        return NotificationListener<ScrollNotification>(
+          onNotification: _onNotification,
+          child: controller.list.length == 0 ?
+          NoneCard() : RefreshIndicator(
+            onRefresh: _onRefresh,
+            child: ListView.builder(
+              itemCount: controller.list.length,
+              itemBuilder: (context, index) {
+                return CardListItem(controller.list[index]);
+              },
             ),
-          ],
-        ),
-        )
-      )
+          )
+        );
+      }),
+    ),
     );
   }
 }

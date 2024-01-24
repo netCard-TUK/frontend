@@ -1,4 +1,3 @@
-
 import 'package:frontend/shared/global.dart';
 import 'package:frontend/src/view/mainView.dart';
 import 'package:get/get.dart';
@@ -28,7 +27,7 @@ class UserConnect extends GetConnect{
     if(response.statusCode == null) throw Exception('통신에러');
     Map<String, dynamic> body = response.body;
 
-    if(body['result'] == 'fail'){
+    if (body['result'] == 'fail') {
       throw Exception(body['message']);
     }
     Logger().i(body['access_token']);
@@ -48,7 +47,7 @@ class UserConnect extends GetConnect{
 
     Map<String, dynamic> body = response.body;
 
-    if(body['result'] == 'fail'){
+    if (body['result'] == 'fail') {
       throw Exception(body['message']);
     }
     return body['access_token'];
@@ -60,10 +59,10 @@ class UserConnect extends GetConnect{
   }
 
   @override
-  void onInit(){
-    allowAutoSignedCert=true;
+  void onInit() {
+    allowAutoSignedCert = true;
     httpClient.baseUrl = Global.apiRoot;
-    httpClient.addRequestModifier<void>((request){
+    httpClient.addRequestModifier<void>((request) {
       request.headers['Accept'] = 'application/json';
       return request;
     });

@@ -1,19 +1,21 @@
 import 'dart:io';
 
 class CardModel {
-  String? cardId;
+  int? cardId;
+  int? userId;
   String? position;
   String? organization;
   String? address;
   int? tell;
   String? email;
   String? name;
-  String? phone;
+  int? phone;
   //이미지(photo) int로 변경
   String? photo;
 
   CardModel.parse(Map m) {
-    cardId = m['cardId'];
+    cardId = m['card_id'];
+    userId = m['user_id'];
     name = m['name'];
     position = m['position'];
     organization = m['organization'];
