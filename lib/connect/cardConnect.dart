@@ -1,3 +1,6 @@
+import 'package:dio/dio.dart' as dioConn;
+import 'package:dio/dio.dart';
+import 'package:get/get_connect.dart'as connect;
 import 'package:frontend/shared/global.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -5,28 +8,44 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 
-final GetStorage _storage = GetStorage();
-
+// final GetStorage _storage = GetStorage();
 final ImagePicker _picker = ImagePicker();
 
 //명함 관련 통신을 담당하는 클래스
 class CardConnect extends GetConnect {
   //카드 등록 통신
+
+  // int? getInt(String userId) => GetStorage().read(userId);
+  // String? getToken (String token) => GetStorage().read(token);
+  final GetStorage _storage;
+  CardConnect(this._storage);
+
+  
+
   get getUserId => _storage.read("userId");
   get getToken => _storage.read("access_token");
   
 
+
+
   // get getUserId => "1";
   // get getToken =>
   //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA1OTk2ODczfQ.cDt-5txoj-YwI53SIvucrqBRHrTU_zConfr8-CzTelo";
+  
+  //내명함지갑
 
+  
+  
+  //내명함정보
   getMyCardList() async {
-    Response response = await get(
+    String accessToken = _storage.read('access_token')??'';
+    String userId = _storage.read('userId')??'';
+    connect.Response response = await get(
       '/api/cards',
       query: {'page': "0", 'size': "10"},
       headers: {
         'userId': await getUserId,
-        'access_token': await getToken,
+        'access_token': accessToken,
       },
     );
 
@@ -70,40 +89,59 @@ class CardConnect extends GetConnect {
   }
 
   //이미지 업로드
-  imageUpload(String name, String path) async{
-    final form = FormData({'file': MultipartFile(path,filename:name)});
+  // imageUpload(String name, String path) async{
+  //   final form = FormData({'file': MultipartFile(path,filename:name)});
 
-    Response response = await post ('api/cards/register', form);
-    Logger().i(response.statusCode);
-    if(response.statusCode == null) throw Exception('통신에러');
-    return response.body;
-  }
+  //   Response response = await post ('api/cards/register', form);
+  //   Logger().i(response.statusCode);
+  //   if(response.statusCode == null) throw Exception('통신에러');
+  //   return response.body;
+  // }
 
+  // Future<void> cardRegister() async{
+  //   try{
+  //     XFile? imageFile = await _imagePicker.pickImage
+  //   }
+  // }
 
-  cardRegister(String position, String organization, String address, int tell, String email, {int? photo}) async{
-    Response response = await post(
-      'api/cards/register',
-      {
-        
-        'userId': await getUserId,
+  cardRegister(
+    String position,
+    String organization,
+    String address,
+    int tell,
+    String email,
+    dynamic photo,
+  ) async {
+    var dio = new Dio();
+    try {
+      dio.options.contentType = 'multipart/form-data';
+      dio.options.maxRedirects.isFinite;
+      print(1);
+      dioConn.FormData formData = dioConn.FormData.fromMap({
+        'userId': getUserId,
+        'position': position,
         'organization': organization,
         'address': address,
         'tell': tell,
         'email': email,
-        if(photo != null) 'photo': photo,
-      },
-      headers: {
-        'acess_token' : await getToken
-      },
-    );
-    if(response.statusCode == null) throw Exception('통신에러');
-    Map<String, dynamic> body = response.body;
-    if(body['result'] == 'fail') {
-      throw Exception(body['message']);
+      });
+      formData.files.add(MapEntry(
+        'photo',
+        await dioConn.MultipartFile.fromFile(photo),
+      ));
+
+      print(formData.fields[0]);
+      print(formData.fields[4]);
+      print(getToken);
+      dio.options.headers = {'access_token': getToken};
+      var response = await dio.post(
+        '${Global.apiRoot}/api/cards/register',
+        data: formData,
+      );
+      print(response);
+    } catch (e) {
+      print(e);
     }
-    Logger().i(body);
-    return body['data'];
-    
   }
 
   @override
