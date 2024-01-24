@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart' as dioConn;
 import 'package:dio/dio.dart';
-import 'package:get/get_connect.dart'as connect;
+import 'package:get/get_connect.dart'as conn;
 import 'package:frontend/shared/global.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -40,7 +40,7 @@ class CardConnect extends GetConnect {
   getMyCardList() async {
     String accessToken = _storage.read('access_token')??'';
     var userId = _storage.read('userId')??'';
-    connect.Response response = await get(
+    conn.Response response = await get(
       '/api/cards',
       query: {'page': "0", 'size': "10"},
       headers: {
@@ -63,7 +63,7 @@ class CardConnect extends GetConnect {
 
   // 모든 명함 정보 전체 조회
   getAllCardList({int page = 0}) async {
-    connect.Response response = await get(
+    conn.Response response = await get(
       '/api/cards',
       query: {'page': page.toString(), 'size': "10"},
     );
@@ -77,7 +77,7 @@ class CardConnect extends GetConnect {
 
   // 명함 만든사람 검색 조회
   getCardListByUsername(String name) async {
-    connect.Response response = await get(
+    conn.Response response = await get(
       '/api/cards/search/list/$name',
     );
     if (response.statusCode == null) throw Exception('통신 에러');
