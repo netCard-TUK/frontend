@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/widget/bottomNavigation.dart';
+import 'package:frontend/src/controller/cardController.dart';
 import 'package:get/get.dart';
 
-import '../shared/global.dart';
-import '../widget/image_button.dart';
+import '../widget/bottomNavigation.dart';
+import '../widget/walletListItem.dart';
+
+final cardController = Get.put(CardController());
 
 class Wallets extends StatefulWidget {
   const Wallets({super.key});
@@ -13,10 +15,15 @@ class Wallets extends StatefulWidget {
 }
 
 class _WalletsState extends State<Wallets> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final String? userId = Get.parameters['userId'];
-  final String? name = Get.parameters['name'];
-  final String? organization = Get.parameters['organization'];
+  Future<void> _onRefresh() async {
+    await cardController.getMyCardList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    cardController.getMyCardList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,46 +37,16 @@ class _WalletsState extends State<Wallets> {
         centerTitle: true,
         backgroundColor: const Color(0xffC4DCED),
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView.builder(
-          itemCount: 10, // 데이터 개수
-          itemBuilder: (context, index) {
-            return Container(
-              margin: const EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  // 사진, 이름, 소속
-                  ImageButton(
-                    imageUrl: userId == null
-                        ? null
-                        : "${Global.apiRoot}/api/wallets/users/$userId",
-                    onTap: () {},
-                  ),
-                  const SizedBox(width: 10),
-                  Text("$name/$organization",
-                      style: const TextStyle(fontSize: 30)),
-                  const SizedBox(width: 30),
-
-                  // 삭제 버튼
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      fixedSize: const Size(80, 70),
-                      backgroundColor: const Color(0xffC4DCED),
-                      textStyle: const TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                    child: const Text('삭제'),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
+      body: GetBuilder<CardController>(builder: (controller) {
+        return RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: ListView.builder(
+              itemCount: controller.list.length,
+              itemBuilder: (context, index) {
+                return WalletListItem(controller.list[index]);
+              }),
+        );
+      }),
     );
   }
 }
