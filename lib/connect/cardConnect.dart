@@ -39,12 +39,12 @@ class CardConnect extends GetConnect {
   //내명함정보
   getMyCardList() async {
     String accessToken = _storage.read('access_token')??'';
-    String userId = _storage.read('userId')??'';
+    var userId = _storage.read('userId')??'';
     connect.Response response = await get(
       '/api/cards',
       query: {'page': "0", 'size': "10"},
       headers: {
-        'userId': await getUserId,
+        'userId': userId.toString(),
         'access_token': accessToken,
       },
     );
@@ -133,6 +133,7 @@ class CardConnect extends GetConnect {
       print(formData.fields[0]);
       print(formData.fields[4]);
       print(getToken);
+      print(photo);
       dio.options.headers = {'access_token': getToken};
       var response = await dio.post(
         '${Global.apiRoot}/api/cards/register',

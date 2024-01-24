@@ -52,8 +52,8 @@ class _LoginState extends State<Login> {
       bool result = await userController.login(email, password);
 
       if(result == true){
-        // Get.offAll(()=> const Main());
-        Navigator.pushNamed(context, '/home');
+        Get.offAll(()=> const Main());
+        // Navigator.pushNamed(context, '/home');
       }else{
         _withdrawAlertForm(context);
       }
