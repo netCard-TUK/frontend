@@ -1,13 +1,12 @@
 import 'package:dio/dio.dart' as dioConn;
 import 'package:dio/dio.dart';
-import 'package:get/get_connect.dart' as connect;
+import 'package:get/get_connect.dart' as conn;
 import 'package:frontend/shared/global.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
-import 'package:get/get_connect.dart' as conn;
 
 // final GetStorage _storage = GetStorage();
 final ImagePicker _picker = ImagePicker();
@@ -33,12 +32,12 @@ class CardConnect extends GetConnect {
   //내명함정보
   getMyCardList() async {
     String accessToken = _storage.read('access_token') ?? '';
-    String userId = _storage.read('userId') ?? '';
-    connect.Response response = await get(
+    var userId = _storage.read('userId') ?? '';
+    conn.Response response = await get(
       '/api/cards',
       query: {'page': "0", 'size': "10"},
       headers: {
-        'userId': await getUserId,
+        'userId': userId.toString(),
         'access_token': accessToken,
       },
     );
